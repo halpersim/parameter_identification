@@ -1,5 +1,6 @@
 *.slxc
 *.mexw64
+*.asv
 */slprj/*
 simulation/data/
 *.r2018b

@@ -296,15 +296,15 @@ if func == "plot_figures"
             end
         end
             
-        % dere = load("simulation_with_friction_data\non_causal_filter_27_02_2024.mat");
-        % dere_tau = dere.data{2}.Values.Data;
-        % hund = load("simulation_with_friction_data\real_roll_yaw_27_02_2024.mat");
-        % hund_tau = hund.data{2}.Values.Data;
-        % 
-        % plot(dere_tau(k, i), 'LineWidth', 2);
-        % plot(hund_tau(k, i), 'LineWidth', 2);
-        % 
-        % leg = [leg "\pi_b with noncausal filter" "\pi_b with real roll/yaw"];
+        dere = load("simulation_with_friction_data\non_causal_filter_27_02_2024.mat");
+        dere_tau = dere.data{2}.Values.Data;
+        hund = load("simulation_with_friction_data\real_roll_yaw_27_02_2024.mat");
+        hund_tau = hund.data{2}.Values.Data;
+
+        plot(dere_tau(k, i), 'LineWidth', 2);
+        plot(hund_tau(k, i), 'LineWidth', 2);
+
+        leg = [leg "\pi_b with noncausal filter" "\pi_b with real roll/yaw"];
 
         legend(leg);
         hold off;
