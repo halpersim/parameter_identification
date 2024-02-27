@@ -1,0 +1,8 @@
+*.slxc
+*.mexw64
+*/slprj/*
+simulation/data/
+*.r2018b
+*.r2023a
+*.DS_Store
+*/python/*
