@@ -6,3 +6,5 @@ simulation/data/
 *.r2023a
 *.DS_Store
 */python/*
+/measurements/*
+/parameter_identification/results/measurements_averaged.mat
