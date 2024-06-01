@@ -1,4 +1,4 @@
-This is the repository for my [Bachelor Thesis](https://github.com/halpersim/parameter_identification/blob/main/Bachelor_Thesis_Simon_Halper.pdf) _Identification of the dynamic parameters of the KUKA LBR iiwa_ at the Automation and Control Institute, TU Wien. 
+This is the repository for my [Bachelor Thesis](https://github.com/halpersim/parameter_identification/blob/main/Bachelor_Thesis_Simon_Halper.pdf) **_Identification of the dynamic parameters of the KUKA LBR iiwa_** at the Automation and Control Institute, TU Wien. 
 
 ## Abstract
 
