@@ -110,6 +110,8 @@ function out = identify_parameter(in)
     pi.tau_filtered = tau_filtered;
     pi.q_filtered = q_filtered;
 
+    out.pi = pi;
+
     %% ++++++++++++++++++++ MU ++++++++++++++++++++++++++
     %------------------ Consideration of Physical Feasibility chapter (2.4.2 / 3.2.4) ---------------
 
@@ -148,10 +150,7 @@ function out = identify_parameter(in)
         % mu.values = table(mu_exp, mu_act, mu_diff, mu_diff_rel, units);
 
         % mu_vec = [mu_vec {mu}];
-    end
 
-    out.pi = pi;
-    if in.mu.calculate
         out.mu = mu_vec;
     end
     

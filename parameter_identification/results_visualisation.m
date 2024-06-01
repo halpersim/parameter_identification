@@ -90,6 +90,24 @@ tau_filtered = filtfilt(tau_sos_filter, g_sos, tau_data);
 % writetable(tab, "csv/traj_27.csv");
 % 
 
+%%--------------------- Trajectory q export (for thesis) -------------------------------
+q = zeros(2000, 7);
+w = 2
+
+
+tab = array2table(results{12}.pi.q, "VariableNames", ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]);
+step = transpose(1:2701) * 0.01;
+t2 = table(step);
+tab = [t2 tab];
+all_idx = 1:2701;
+all_idx(1:4:end) = [];
+tab(all_idx, :) = [];
+writetable(tab, "csv/traj_27.csv");
+
+
+
+
+
 %the actual trajectory starts at measurent 1263
 %before that, the robot just stands still -> this data is used to
 %initialize the filters

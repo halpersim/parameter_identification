@@ -17,10 +17,13 @@ cd("..\simulation\kukalbriiwa_model\matlab\withoutLinAxes\");
 param_kuka_lab;
 param_in.param_robot = param_robot;
 param_in.param_robot.g = -param_in.param_robot.g;
+% param_in.param_robot.roll = 0;
+% param_in.param_robot.pitch = 0;
+% param_in.param_robot.yaw = 0;
 cd(cur_dir);
 
 param_in.with_friction = true;
-param_in.mu.calculate = false;
+param_in.mu.calculate = true;
 
 param_in.filter.use_filter = true;
 param_in.filter.fs = 1000;
@@ -127,52 +130,97 @@ results = [];
 % end
 
 
-for causal = 1:2
-    for q_cutoff = 1.3:0.1:3
-        for tau_cutoff = (q_cutoff - 0.2):0.1:(q_cutoff + 0.5)
-            param_in.filter.fc_q = q_cutoff;
-            param_in.filter.fc_tau = tau_cutoff;   
-            param_in.filter.non_causal_filter = causal == 1;
+% for causal = 1:2
+%     for q_cutoff = 1.3:0.1:3
+%         for tau_cutoff = (q_cutoff - 0.2):0.1:(q_cutoff + 0.5)
+%             param_in.filter.fc_q = q_cutoff;
+%             param_in.filter.fc_tau = tau_cutoff;   
+%             param_in.filter.non_causal_filter = causal == 1;
+% 
+%             param_out = identify_parameter(param_in);
+% 
+%             if param_out.pi.feasible == "inertia matrix positive definite (100%) - skew symmetry of Bt - 2C (100%)"
+%                 % disp("cuttoff: q = " + num2str(q_cutoff) + ", tau = "+ num2str(tau_cutoff));
+%                 % disp("non_friction_norm: " + num2str(param_out.pi.non_friction_norm));
+%                 % disp("friction_norm: " + num2str(param_out.pi.friction_norm));
+%                 % disp("feasible: " + param_out.pi.feasible);
+%                 % disp("Y_cond: " + num2str(param_out.pi.Y_cond));
+%                 % disp("------");
+% 
+%                 disp("start simulating pi_b [" + num2str(q_cutoff) + ", " + num2str(tau_cutoff) + "]");
+%                 tic; 
+%                 try 
+%                 [tau_sim, q_sim] = simulate_parameter(param_out.pi.values.pi_b_act, "pi_b", traj_nr);
+% 
+%                 duration = toc;
+%                 disp("end simulation - duration = " + num2str(duration)); 
+% 
+%                 pi_res.tau = tau_sim;
+%                 pi_res.q = q_sim;
+%                 pi_res.sim_duration = duration;
+% 
+%                 res = [];
+% 
+%                 res.pi = pi_res;
+%                 res.fc_q = q_cutoff;
+%                 res.fc_tau = tau_cutoff;
+%                 res.traj_nr = traj_nr;      
+%                 res.params = param_out;
+% 
+%                 results = [results {res}];
+%                 save("results/different_simulations_02_27.mat", 'results');
+%                 catch ME
+%                     disp("error: " + ME.identifier);
+%                 end
+%             end
+%         end
+%     end
+% end
 
-            param_out = identify_parameter(param_in);
+param_in.filter.fc_q = 3;
+param_in.filter.fc_tau = 3.5;
+param_in.filter.non_causal_filter = 1;
+
+param_out = identify_parameter(param_in);
+% 
+% l = 2;
+% disp("start simulating mu [" + num2str(l) +  "]");
+% tic; 
+% [tau_sim, q_sim] = simulate_parameter(param_out.mu{l}.values.mu_act, "mu", 27);
+% disp("end simulation - duration = " + num2str(toc)); 
+% 
+% mu_l.tau = tau_sim;
+% mu_l.q = q_sim;
+% 
+% mu_res = [mu_res {mu_l}];
+
+% load("results\final_results.mat");
+% mu_res = [];
+% 
+% for l = 1:max(size(param_out.mu))
+%     disp("start simulating mu [" + num2str(l) +  "]");
+%     tic; 
+%     [tau_sim, q_sim] = simulate_parameter(param_out.mu{l}.values.mu_act, "mu", 27);
+%     disp("end simulation - duration = " + num2str(toc)); 
+% 
+%     mu_l.tau = tau_sim;
+%     mu_l.q = q_sim;
+% 
+%     mu_res = [mu_res {mu_l}];
+% end
+% res = [];
+% 
+% %res.pi = pi_res;
+% res.fc_q = 3;
+% res.fc_tau = 3.5;
+% res.traj_nr = traj_nr;      
+% res.params = param_out;
+% 
+% save("results/final_result_2.mat", 'res');
+
+  
+
     
-            if param_out.pi.feasible == "inertia matrix positive definite (100%) - skew symmetry of Bt - 2C (100%)"
-                % disp("cuttoff: q = " + num2str(q_cutoff) + ", tau = "+ num2str(tau_cutoff));
-                % disp("non_friction_norm: " + num2str(param_out.pi.non_friction_norm));
-                % disp("friction_norm: " + num2str(param_out.pi.friction_norm));
-                % disp("feasible: " + param_out.pi.feasible);
-                % disp("Y_cond: " + num2str(param_out.pi.Y_cond));
-                % disp("------");
-
-                disp("start simulating pi_b [" + num2str(q_cutoff) + ", " + num2str(tau_cutoff) + "]");
-                tic; 
-                try 
-                [tau_sim, q_sim] = simulate_parameter(param_out.pi.values.pi_b_act, "pi_b", traj_nr);
-                
-                duration = toc;
-                disp("end simulation - duration = " + num2str(duration)); 
-
-                pi_res.tau = tau_sim;
-                pi_res.q = q_sim;
-                pi_res.sim_duration = duration;
-
-                res = [];
-                
-                res.pi = pi_res;
-                res.fc_q = q_cutoff;
-                res.fc_tau = tau_cutoff;
-                res.traj_nr = traj_nr;      
-                res.params = param_out;
-        
-                results = [results {res}];
-                save("results/different_simulations_02_27.mat", 'results');
-                catch ME
-                    disp("error: " + ME.identifier);
-                end
-            end
-        end
-    end
-end
 
 
 % for i = [7]
@@ -247,7 +295,7 @@ end
 function opt_ar = get_mu_fmincon_configs()
     opt_ar = [];
 
-    display = 'off';
+    display = 'iter';
     min_optimality = 1e+2;
     min_step = 1e-7;
     min_costraint = 1e-14;
@@ -260,18 +308,19 @@ function opt_ar = get_mu_fmincon_configs()
 
 
     f = optimoptions('fmincon', ...
-        'Display','off', ...
+        'Display',display, ...
         'MaxFunctionEvaluations', 50000, ...
         'Algorithm', 'interior-point', ...
         'StepTolerance', 1e-7, ...
         'SpecifyObjectiveGradient',true, ...
+        'checkGradients', true, ...
         'ObjectiveLimit', 1e+2, ...
         'ConstraintTolerance', 1e-14, ...
         'EnableFeasibilityMode', true);
     opt_ar = [opt_ar {f}];
-    
+
     % f = optimoptions('fmincon', ...
-    %     'Display','off', ...
+    %     'Display',display, ...
     %     'MaxFunctionEvaluations', 50000, ...
     %     'Algorithm', 'interior-point', ...
     %     'StepTolerance', 1e-7, ...
@@ -282,18 +331,19 @@ function opt_ar = get_mu_fmincon_configs()
     % opt_ar = [opt_ar {f}];
 
     f = optimoptions('fmincon', ...
-        'Display','off', ...
+        'Display',display, ...
         'MaxFunctionEvaluations', 50000, ...
         'Algorithm', 'sqp', ...
         'StepTolerance', 1e-2, ...
         'SpecifyObjectiveGradient',true, ...
+        'checkGradients', true, ...
         'ObjectiveLimit', 1e+2, ...
         'ConstraintTolerance', 1e-6, ...
         'EnableFeasibilityMode', true);
 
     opt_ar = [opt_ar {f}];
     %     f = optimoptions('fmincon', ...
-    %     'Display','off', ...
+    %     'Display',display, ...
     %     'MaxFunctionEvaluations', 50000, ...
     %     'Algorithm', 'sqp', ...
     %     'StepTolerance', 1e-2, ...

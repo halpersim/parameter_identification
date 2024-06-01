@@ -34,26 +34,48 @@
 clear;
 
 load("../simulation/trajectories.mat");
+addpath("../simulation/kukalbriiwa_model/matlab/withoutLinAxes/");
+addpath("../simulation/kukalbriiwa_model/matlab/withoutLinAxes/parameter_identification/");
 
-%for i = 1:max(size(traj))
-for i = 17
+param_kuka_lab;
 
-    t = erg{17}.traj;
-    t.T = 20;
-    % t.generate = true;
-    % t.error_func = 1;
-    p = generate_and_test_trajectory(t, false);
-    
-    disp("[" + num2str(i) + "] -  cond = " + num2str(p.traj.cond));
-    disp("Y cond = " + num2str(p.params.pi.Y_b_bar_cond) + ",");
-    disp("pi norm = " + num2str(p.params.pi.non_friction_norm) + ",");
-    disp("feasibility = " + p.params.pi.feasible);
+cond_Y_b_bar = zeros(35, 1);
+cond_Y_bar = zeros(35, 1);
 
-    % erg = [erg {e}];
-    % disp("... " + int2str(i));
-    % 
-    % save("erg.mat ", 'erg');
+for i = 1:35
+    t = erg{i}.traj;
+
+    Y_bar = Y_bar_from_trajectory(t.a, t.b, 20, @Y, param_robot);
+    Y_b_bar = Y_bar_from_trajectory(t.a, t.b, 20, @Y_b, param_robot);
+
+    %disp("cond(Y_b_bar) = " + num2str(cond(Y_b_bar)) + " - cond(Y_bar) = " +  num2str(norm(Y_bar) * norm(pinv(Y_bar))));
+    cond_Y_b_bar(i) =  cond(Y_b_bar); 
+    cond_Y_bar(i) = norm(Y_bar) * norm(pinv(Y_bar));
 end
+
+tab = table(cond_Y_bar, cond_Y_b_bar);
+
+
+% %for i = 1:max(size(traj))
+% for i = 17
+% 
+%     t = erg{17}.traj;
+%     t.T = 20;
+%     % t.generate = true;
+%     % t.error_func = 1;
+%     p = generate_and_test_trajectory(t, false);
+% 
+%     disp("[" + num2str(i) + "] -  cond = " + num2str(p.traj.cond));
+%     disp("Y cond = " + num2str(p.params.pi.Y_b_bar_cond) + ",");
+%     disp("pi norm = " + num2str(p.params.pi.non_friction_norm) + ",");
+%     disp("feasibility = " + p.params.pi.feasible);
+% 
+%     % erg = [erg {e}];
+%     % disp("... " + int2str(i));
+%     % 
+%     % save("erg.mat ", 'erg');
+% end
+
 
 % load("erg.mat", 'erg');
 % 

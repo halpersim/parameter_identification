@@ -1,4 +1,4 @@
-function traj_out = generate_and_test_trajectory(traj_in, just_masurements, measure)
+function traj_out = generate_and_test_trajectory(traj_in, just_measurements, measure)
     % this function generates a new trajectory, tests it in simulation and 
     % then performes the paramter identification on the simulation results
     % alternatively the first or the first two steps can be skipped
@@ -15,7 +15,7 @@ function traj_out = generate_and_test_trajectory(traj_in, just_masurements, meas
     addpath("../parameter_identification/");
 
     traj_duration = 0;
-    if ~just_masurements 
+    if ~just_measurements 
 
         if isfield(traj_in, 'generate')
     	    %% ------------------- trajectory generation ---------------------

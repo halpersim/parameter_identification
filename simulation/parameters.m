@@ -7,6 +7,8 @@ if is_manual_simulation()
     close all
     clear
     clc
+
+    g_factor = -1;
     
     %% Set paths
     warning('off', 'MATLAB:rmpath:DirNotFound');
@@ -19,12 +21,13 @@ if is_manual_simulation()
     %the following two folders both contain the matrices of the equations of motion
     %however, in the first one, the matrices are expressed with respect to the mu paramter
     % and in the second one with respect to the pi_b paramter 
-    %% ---- so which line is active decides which set of paramters is used
-    %addpath('./kukalbriiwa_model/matlab/withoutLinAxes/');
-    addpath('./kukalbriiwa_model/matlab/withoutLinAxes/dyn_parameter/');
+    %% ---- so which line is active decides which set of parameters is used
+    addpath('./kukalbriiwa_model/matlab/withoutLinAxes/');
+    %addpath('./kukalbriiwa_model/matlab/withoutLinAxes/dyn_parameter/');
 
-    load("dyn_richtig_old_filter.mat");
-    pi_b = param_out.pi.values.pi_b_ist;
+    load("simulation_results.mat");
+    mu = out.mu{1}.values.mu_act;
+    %pi_b = pi_b;% param_out.pi.values.pi_b_ist;
 else
     if evalin('base', 'exist("TEST_TRAJECTORY", "var")') == 1
         par.a = evalin('base', 'par.a');
@@ -85,6 +88,9 @@ if kuka
 
     param_robot.g = g_factor * param_robot.g;
     %param_robot.yaw = 0;
+    if exist('mu', 'var')
+        param_robot = load_mu(param_robot, mu);
+    end
 else
     %Parameters of simscape for Fachvertiefungs-coordinate system
     param_simscape;
