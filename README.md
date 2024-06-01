@@ -11,7 +11,7 @@ The results of the parameter identification are verified by simulating the KUKA 
 iiwa R820 with the identified parameters and comparing the simulation results with the
 robot’s measurements.
 
-
+## Repository Structure
 Chapter 3.1 of my thesis is implemented in the Maple file [/simulation/kukalbriiwa_model/maple/withoutLinAxes/model.mw](https://github.com/halpersim/parameter_identification/blob/main/simulation/kukalbriiwa_model/maple/withoutLinAxes/model.mw).   
 Chapter 3.2 is implemented in folder *paramter_identification*.   
 Chapter 3.3 is implemented in folder *trajectory_generation*.    
