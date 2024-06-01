@@ -1,6 +1,7 @@
 This is the repository for my [Bachelor Thesis](https://github.com/halpersim/parameter_identification/blob/main/Bachelor_Thesis_Simon_Halper.pdf) _Identification of the dynamic parameters of the KUKA LBR iiwa_ at the Automation and Control Institute, TU Wien. 
 
-*Abstract*
+## Abstract
+
 The dynamic parameters of a robot are a set of parameters that allow the simulation
 and control of a robot’s motion. Although such a set of parameters is crucial for working
 with any robot, it is not publicly available for the KUKA LBR iiwa R820. Therefore, the
